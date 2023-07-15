@@ -6,6 +6,7 @@ import { z } from "zod";
 
 const env = z
 	.object({
+		ID: z.string(),
 		TARGET_FILE_PATH: z.string(),
 		REQUEST_ENDPOINT: z.string().url(),
 		REQUEST_METHOD: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
@@ -15,7 +16,10 @@ const env = z
 const send = async (data: string) => {
 	await got(env.REQUEST_ENDPOINT, {
 		method: env.REQUEST_METHOD,
-		body: data,
+		json: {
+			id: env.ID,
+			data,
+		},
 	});
 };
 
